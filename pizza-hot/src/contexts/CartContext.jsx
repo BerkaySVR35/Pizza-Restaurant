@@ -17,12 +17,15 @@ export function CartContextProvider({ children }) {
     dispatch({ type: "REMOVE_ITEM", id });
   }
   // clear all items
-  function clearAll() {}
+  function clearAll() {
+    dispatch({ type: "CLEAR_CART" });
+  }
 
   const cartContext = {
     items: cart.items,
     addItem,
     deleteItem,
+    clearAll,
   };
 
   console.log(cartContext);

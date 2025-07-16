@@ -1,11 +1,19 @@
 const bodyParser = require("body-parser");
 const express = require("express");
+const cors = require("cors");
 const fs = require("fs/promises");
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(express.static("public"));
+
+app.use(
+  cors({
+    origin: "*", // Sadece bu kökenden gelen isteklere izin ver
+    // veya origin: '*' // Tüm kökenlerden gelen isteklere izin ver (geliştirme ortamında kullanışlı, üretimde dikkatli olun)
+  })
+);
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -27,14 +35,17 @@ app.post("/orders", async (req, res) => {
   }
 
   if (
-    order.customer.name === null ||
-    order.customer.name.trim() === "" ||
-    order.customer.email === null ||
-    !order.customer.email.includes("@") ||
-    order.customer.address === null ||
-    order.customer.address.trim() === "" ||
-    order.customer.city === null ||
-    order.customer.city.trim() === ""
+    (order.customer.name === null ||
+      order.customer.name.trim() === "" ||
+      order.customer.email === null ||
+      !order.customer.email.includes("@") ||
+      order.customer.address === null ||
+      order.customer.address.trim() === "" ||
+      order.customer.phone === null ||
+      order.customer.phone.trim() === "" ||
+      order.customer.city === null ||
+      order.customer.city.trim() === "",
+    order.customer.district === null || order.customer.district.trim() === "")
   ) {
     return res.status(400).json({
       message: "Please fill the form.",

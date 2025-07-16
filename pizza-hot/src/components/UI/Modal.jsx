@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 
-export default function Model({ children, open }) {
+export default function Modal({ children, open }) {
   const dialog = useRef();
 
   useEffect(() => {
